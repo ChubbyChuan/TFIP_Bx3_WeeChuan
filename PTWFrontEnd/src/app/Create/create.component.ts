@@ -272,7 +272,7 @@ export class CreateComponent implements OnInit {
         // this.Response = JSON.stringify(error.body).replace(/[{\}""]/g, '');
       }
     );
-
+    this.pendingSearch()
   }
 
   closeEntry(id: number) {
@@ -287,6 +287,7 @@ export class CreateComponent implements OnInit {
         // this.Response = JSON.stringify(error.body).replace(/[{\}""]/g, '');
       }
     );
+    this.approvedSearch() 
   }
 
   approvedSearch() {

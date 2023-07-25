@@ -111,38 +111,38 @@ export class ApprovalComponent implements OnInit {
     const currentUser = localStorage.getItem('currentUser')
     if (currentUser) {
       this.user = JSON.parse(currentUser)
-    }  else {
+    } else {
       this.router.navigate(['/login']);
 
     }
   }
-  WACheckboxChange(event: any) { 
+  WACheckboxChange(event: any) {
     const selectedWorkArea = (this.ApprovalformGroup.controls['selectedWorkArea'] as FormArray);
     if (event.target.checked) {
       selectedWorkArea.push(new FormControl(event.target.value));
     } else {
       const index = selectedWorkArea.controls
-      .findIndex(x => x.value === event.target.value);
+        .findIndex(x => x.value === event.target.value);
       selectedWorkArea.removeAt(index);
     }
   }
-  PPECheckboxChange(event: any) { 
+  PPECheckboxChange(event: any) {
     const selectedPPE = (this.ApprovalformGroup.controls['selectedPPE'] as FormArray);
     if (event.target.checked) {
       selectedPPE.push(new FormControl(event.target.value));
     } else {
       const index = selectedPPE.controls
-      .findIndex(x => x.value === event.target.value);
+        .findIndex(x => x.value === event.target.value);
       selectedPPE.removeAt(index);
     }
   }
-  PrecautionCheckboxChange(event: any) { 
+  PrecautionCheckboxChange(event: any) {
     const selectedPrecaution = (this.ApprovalformGroup.controls['selectedPrecaution'] as FormArray);
     if (event.target.checked) {
       selectedPrecaution.push(new FormControl(event.target.value));
     } else {
       const index = selectedPrecaution.controls
-      .findIndex(x => x.value === event.target.value);
+        .findIndex(x => x.value === event.target.value);
       selectedPrecaution.removeAt(index);
     }
   }
@@ -156,7 +156,9 @@ export class ApprovalComponent implements OnInit {
     this.approvalSvc.updateApproval(id, approval).subscribe(
       (response: any) => {
         // Handle the response here
-        console.log('Response from cancellation:', response);  
+        console.log('Response from cancellation:', response);
+        this.pendingSearch()
+
       },
       (error: any) => {
         // Handle the error here
@@ -204,7 +206,9 @@ export class ApprovalComponent implements OnInit {
     this.approvalSvc.cancelApproval(id, this.user.name).subscribe(
       (response: any) => {
         // Handle the response here
-        console.log('Response from cancellation:', response);  
+        console.log('Response from cancellation:', response);
+        this.pendingSearch()
+
       },
       (error: any) => {
         // Handle the error here
@@ -242,7 +246,7 @@ export class ApprovalComponent implements OnInit {
     })
   }
 
-  
+
 
   /*-------------------------------------------------------*/
 

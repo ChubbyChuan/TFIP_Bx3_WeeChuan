@@ -63,7 +63,7 @@ public class ApprovalController {
         System.out.println(">>>>>> email: " + email);
         System.out.println(">>>>>> company: " + company);
         
-        ptwRepo.updateRequestStatus(id, "approved", name);
+        ResponseEntity<String> response = ptwRepo.updateRequestStatus(id, "approved", name);
 
         return approvalRepo.saveApproval(name, company,selectedWorkAreaString,selectedPPEString, selectedPrecautionString,  id, email);
     }

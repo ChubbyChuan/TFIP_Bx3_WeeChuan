@@ -165,6 +165,7 @@
 
         <!-- Permits Card -->
         <mat-card class="PTWcard" *ngFor="let permit of (pendingpermits$ | async) as permits">
+            <ng-container *ngIf="permit.name == this.user.name">
             <mat-card-header>
                 <div mat-card-avatar class="PTWCardheader_div">
                     <mat-icon [svgIcon]="permit.type" aria-hidden="false" aria-label="hot_icon"
@@ -194,6 +195,7 @@
                 <button mat-button color="primary" (click)="editEntry(permit.id)">EDIT</button>
                 <button mat-button color="primary" (click)="cancelEntry(permit.id)">CANCEL</button>
             </mat-card-actions>
+        </ng-container>
         </mat-card>
 
     </mat-tab>
@@ -224,6 +226,7 @@
 
         <!-- Permits Card -->
         <mat-card class="PTWcard" *ngFor="let permit of (approvedpermits$ | async) as permits">
+            <ng-container *ngIf="permit.name == this.user.name">
             <mat-card-header>
                 <div mat-card-avatar class="PTWCardheader_div">
                     <mat-icon [svgIcon]="permit.type" aria-hidden="false" aria-label="hot_icon"
@@ -252,6 +255,7 @@
             <mat-card-actions>
                 <button mat-button color="primary" (click)="closeEntry(permit.id)">Close Permit</button>
             </mat-card-actions>
+        </ng-container>
         </mat-card>
     </mat-tab>
 </mat-tab-group>

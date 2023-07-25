@@ -23,9 +23,8 @@ public class PTWRepository {
 	@Autowired
 	private JdbcTemplate jbdctemplate;
 
-	
-    @Autowired
-    EmailService emailSvc;
+	@Autowired
+	EmailService emailSvc;
 
 	public static final String SQL_INSERT_REQUEST = "INSERT INTO Request (type, name, company, equipment, startdate, enddate, locations, comment, status, user_email) "
 			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -68,8 +67,9 @@ public class PTWRepository {
 
 			int generatedId = keyHolder.getKey().intValue();
 			System.out.println("New Permit ID: " + generatedId);
-			String subject = "Hi! " + name + " from "+ company + ". Upload Successful. Id:" + generatedId;
-			String text = "Here are the key information. type = " + type + "equipment: " + equipment + " @ " + locationString + "Details:" + comments ;
+			String subject = "Hi! " + name + " from " + company + ". Upload Successful. Id:" + generatedId;
+			String text = "Here are the key information. type = " + type + "equipment: " + equipment + " @ "
+					+ locationString + "Details:" + comments;
 
 			emailSvc.sendSimpleMessage(email, subject, text);
 
@@ -90,7 +90,6 @@ public class PTWRepository {
 			SELECT * FROM Request WHERE (status = ?) AND (? is NULL or type = ?) AND(? is NULL or
 			locations = ?)
 			""";
-		
 
 	public List<Request> retrieveRequestByFilters(String type, String location,
 			String status) {
@@ -113,7 +112,6 @@ public class PTWRepository {
 			requestList.add(Request.create(resultSet));
 		return requestList;
 	}
-
 
 	/*------------------------------Search by id---------------------------------------------- */
 
@@ -158,10 +156,10 @@ public class PTWRepository {
 			/* to check status of the ID before its approved */
 			Request requestdatabase = retrieveRequestByid(id);
 			if (!"pending".equalsIgnoreCase(requestdatabase.getStatus())) {
-			return ResponseEntity.badRequest().body("The request has already been approved");
+				return ResponseEntity.badRequest().body("The request has already been approved");
 			}
 			if (!name.equalsIgnoreCase(requestdatabase.getName())) {
-			return ResponseEntity.badRequest().body("You cannot edit other people request");
+				return ResponseEntity.badRequest().body("You cannot edit other people request");
 			}
 			String status = request.getStatus();
 
@@ -183,20 +181,14 @@ public class PTWRepository {
 	public static final String SQL_UPDATE_REQUEST_STATUS = "UPDATE Request SET status = ? WHERE id = ?";
 
 	public ResponseEntity<String> updateRequestStatus(int id, String status, String name) {
+
 		try {
-			Request requestdatabase = retrieveRequestByid(id);
-			if (!name.equalsIgnoreCase(requestdatabase.getName())) {
-			return ResponseEntity.badRequest().body("You cannot edit other people request");
-			}
 			jbdctemplate.update(SQL_UPDATE_REQUEST_STATUS, status, id);
 			return ResponseEntity.ok("{\"Cancellation Successful for ID\": " + id + "}");
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("{\"Cancel Fail for ID\": " + id + "}");
 		}
-
 	}
-
-
 
 
 	// Functions---------------------------------------------------------------------------------------------------------------

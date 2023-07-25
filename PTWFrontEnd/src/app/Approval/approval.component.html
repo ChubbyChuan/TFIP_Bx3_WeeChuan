@@ -29,6 +29,7 @@
 
   <!-- Permits Card -->
   <mat-card class="PTWcard" *ngFor="let permit of (pendingpermits$ | async) as permits">
+    <ng-container *ngIf="permit.name !== this.user.name">
     <mat-card-header>
       <div mat-card-avatar class="PTWCardheader_div">
         <mat-icon [svgIcon]="permit.type" aria-hidden="false" aria-label="hot_icon" class="PTWcard-icon"></mat-icon>
@@ -60,7 +61,7 @@
     <ng-container *ngIf="selectedPermitId === permit.id">
       <div >
         <form [formGroup]="ApprovalformGroup">
-          <td><p>{{ ApprovalformGroup.value | json }}</p>
+          <td>
             <h3> Equipment, Systems and Work Area Status</h3>
             <div *ngFor="let work_area of work_area_list; let i=index">
               <input type="checkbox" formArrayName="selectedWorkArea" [value]="work_area.name"
@@ -98,5 +99,6 @@
       <button mat-button color="primary" (click)="back()">
         Back</button>
     </mat-card-actions>
+  </ng-container>
   </mat-card>
 </div>
