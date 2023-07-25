@@ -1,0 +1,38 @@
+.permit-icon-button {
+  width: 100px;
+  height: 120px;
+}
+
+.permit-icon {
+  width: 45px;
+  height: auto;
+  position: relative;
+  left: 1px;
+  right: 7px;
+}
+
+.permit-icon-caption {
+  font-size: 11px;
+}
+
+.selected{
+  background-color: red; /* Set the desired background color */
+  color: white; /* Set the desired text color */
+}
+
+.PTWcard {
+  width: 360px;
+  height: auto;
+  border: 1px solid rgb(224, 224, 224);
+}
+.PTWcard-icon {
+  width: 45px;
+  height: 45px;
+  position: relative;
+  left: 8px;
+}
+
+.PTWCardheader_div {
+  width: 61px;
+}
+

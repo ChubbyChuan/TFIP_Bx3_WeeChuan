@@ -1,0 +1,257 @@
+<mat-tab-group #tabGroup>
+    <mat-tab label="Create/Edit">
+        <form [formGroup]="Form">
+            <div>
+                <tr>
+                    <button mat-flat-button color="" (click)="onCreateEdit()">
+                        {{ searchState === 'edit' ? 'Edit' : (searchState === 'create' ? 'Create' : 'Create/Edit') }}
+                    </button>
+
+                    <input *ngIf="searchState !== 'create'" matInput type="number" size="30" id="id"
+                        [disabled]="searchState === 'edit'" placeholder="Key in Permit Number"
+                        [formControl]="idControl">
+
+            </div>
+            <div *ngIf="searchState !== ''">
+                <tr>
+                    <button *ngIf="typeControl.value != 'hot'" mat-stroked-button class="permit-icon-button" value="hot"
+                        (click)="selectType('hot')">
+                <tr>
+                    <mat-icon svgIcon="hot" aria-hidden="false" aria-label="hot_icon" class="permit-icon"></mat-icon>
+                </tr>
+                <tr class="permit-icon-caption">
+                    Hot Work
+                </tr>
+                </button>
+                <button *ngIf="typeControl.value == 'hot'" mat-flat-button color="primary" class="permit-icon-button"
+                    value="hot" (click)="selectType('hot')">
+                    <tr>
+                        <mat-icon svgIcon="hot" aria-hidden="false" aria-label="hot_icon"
+                            class="permit-icon"></mat-icon>
+                    </tr>
+                    <tr class="permit-icon-caption">
+                        Hot Work
+                    </tr>
+                </button>
+
+
+                <button *ngIf="typeControl.value != 'cold'" mat-stroked-button class="permit-icon-button" value="cold"
+                    (click)="selectType('cold')">
+                    <tr>
+                        <mat-icon svgIcon="cold" aria-hidden="false" aria-label="cold_icon"
+                            class="permit-icon"></mat-icon>
+                    </tr>
+                    <tr class="permit-icon-caption">
+                        Cold Work
+                    </tr>
+                </button>
+                <button *ngIf="typeControl.value == 'cold'" mat-flat-button color="primary" class="permit-icon-button"
+                    value="cold" (click)="selectType('cold')">
+                    <tr>
+                        <mat-icon svgIcon="cold" aria-hidden="false" aria-label="cold_icon"
+                            class="permit-icon"></mat-icon>
+                    </tr>
+                    <tr class="permit-icon-caption">
+                        Cold Work
+                    </tr>
+                </button>
+
+                <button *ngIf="typeControl.value != 'confined'" mat-stroked-button class="permit-icon-button"
+                    value="confined" (click)="selectType('confined')">
+                    <tr>
+                        <mat-icon svgIcon="confined" aria-hidden="false" aria-label="confined_icon"
+                            class="permit-icon"></mat-icon>
+                    </tr>
+                    <tr class="permit-icon-caption">
+                        Confined Space
+                    </tr>
+                </button>
+                <button *ngIf="typeControl.value == 'confined'" mat-flat-button color="primary"
+                    class="permit-icon-button" value="confined" (click)="selectType('confined')">
+                    <tr>
+                        <mat-icon svgIcon="confined" aria-hidden="false" aria-label="confined_icon"
+                            class="permit-icon"></mat-icon>
+                    </tr>
+                    <tr class="permit-icon-caption">
+                        Confined Space
+                    </tr>
+                </button>
+
+                </tr>
+
+            </div>
+
+            <div *ngIf="searchState !== ''" class="grid-container">
+                <table mat-table class="formlabel">
+                    <tr>
+                        <td> <mat-label for="equipment">Equipment:</mat-label> </td>
+                        <td>
+                            <input matInput type="text" size="30" id="name" placeholder="Equipment"
+                                formControlName="equipment">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="starttime">Start Time</label></td>
+                        <td><input type="datetime-local" formControlName="startdate"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="endtime">End Time</label></td>
+                        <td><input type="datetime-local" formControlName="enddate"></td>
+                    </tr>
+                    <tr>
+                        <td> <label for="location">Location:</label> </td>
+                        <td>
+                            <input type="text" placeholder="Location" aria-label="Location" matInput
+                                [formControl]="locationControl" [matAutocomplete]="locationauto">
+
+                            <mat-autocomplete #locationauto="matAutocomplete">
+                                <mat-option *ngFor="let location of filteredLocations | async" [value]="location">
+                                    {{location}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <td><label for="comments">Comments:</label></td>
+                        <td>
+                            <textarea id="comments" cols="40" rows="5" formControlName="comment"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <div class="justify-right">
+                                <button mat-flat-button color="primary" type="button" (click)="submitRequest()"
+                                    [disabled]="invalidForm()">
+                                    {{ searchState !== 'create' ? 'Edit Request' : 'Send Permit Request' }}
+                                </button>
+                                <button mat-flat-button color="primary" type="button" (click)="cancelCreateEdit()">
+                                    Cancel</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+        <p> {{ Response | json}} </p>
+
+    </mat-tab>
+    <mat-tab label="Pending" #Pending>
+        <!-- Filtering Options -->
+        <form [formGroup]="pendingGroup" (submit)="pendingSearch()">
+            <mat-form-field>
+                <mat-label>Filter by Type</mat-label>
+                <select matNativeControl formControlName="type">
+                    <option value=""></option>
+                    <option value="hot">Hot</option>
+                    <option value="cold">Cold</option>
+                    <option value="confined">Confined Space</option>
+                </select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Filter by Location</mat-label>
+                <mat-select formControlName="locations">
+                    <mat-option *ngFor="let location of pendingLocations" [value]="location">
+                        {{ location }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" type="submit">Search</button>
+        </form>
+
+        <!-- Permits Card -->
+        <mat-card class="PTWcard" *ngFor="let permit of (pendingpermits$ | async) as permits">
+            <mat-card-header>
+                <div mat-card-avatar class="PTWCardheader_div">
+                    <mat-icon [svgIcon]="permit.type" aria-hidden="false" aria-label="hot_icon"
+                        class="PTWcard-icon"></mat-icon>
+                    <h4 style="text-align: center;">#{{ permit.id }}</h4>
+                </div>
+                <mat-card-title>
+                    {{ permit.locations }}
+                </mat-card-title>
+                <mat-card-subtitle>{{ permit.equipment }}</mat-card-subtitle>
+                <mat-card-subtitle matTooltip="{{ permit.startdate | date: 'dd-MMM HH:mm a' }}">
+                    Start: {{ permit.startdate | date: 'HH:mm a' }}
+                </mat-card-subtitle>
+                <mat-card-subtitle matTooltip="{{ permit.enddate | date: 'dd-MMM HH:mm a' }}">
+                    End: {{ permit.enddate | date: 'HH:mm a' }}
+                </mat-card-subtitle>
+                <!-- End: <br> {{ permit.startdate | date: 'dd-MMM HH:mm a' }} -->
+                <!-- End: <br> {{ permit.enddate | date: 'dd-MMM HH:mm a' }} -->
+            </mat-card-header>
+            <br>
+            <mat-card-content>
+                <p>
+                    {{ permit.comment }}
+                </p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button color="primary" (click)="editEntry(permit.id)">EDIT</button>
+                <button mat-button color="primary" (click)="cancelEntry(permit.id)">CANCEL</button>
+            </mat-card-actions>
+        </mat-card>
+
+    </mat-tab>
+    <mat-tab label="Approved">
+        <!-- Filtering Options -->
+        <form [formGroup]="approvedGroup" (submit)="approvedSearch()">
+            <mat-form-field>
+                <mat-label>Filter by Type</mat-label>
+                <select matNativeControl formControlName="type">
+                    <option value=""></option>
+                    <option value="hot">Hot</option>
+                    <option value="cold">Cold</option>
+                    <option value="confined">Confined Space</option>
+                </select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Filter by Location</mat-label>
+                <mat-select formControlName="locations">
+                    <mat-option *ngFor="let location of approvedLocations" [value]="location">
+                        {{ location }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" type="submit">Search</button>
+        </form>
+
+        <!-- Permits Card -->
+        <mat-card class="PTWcard" *ngFor="let permit of (approvedpermits$ | async) as permits">
+            <mat-card-header>
+                <div mat-card-avatar class="PTWCardheader_div">
+                    <mat-icon [svgIcon]="permit.type" aria-hidden="false" aria-label="hot_icon"
+                        class="PTWcard-icon"></mat-icon>
+                    <h4 style="text-align: center;">#{{ permit.id }}</h4>
+                </div>
+                <mat-card-title>
+                    {{ permit.locations }}
+                </mat-card-title>
+                <mat-card-subtitle>{{ permit.equipment }}</mat-card-subtitle>
+                <mat-card-subtitle matTooltip="{{ permit.startdate | date: 'dd-MMM HH:mm a' }}">
+                    Start: {{ permit.startdate | date: 'HH:mm a' }}
+                </mat-card-subtitle>
+                <mat-card-subtitle matTooltip="{{ permit.enddate | date: 'dd-MMM HH:mm a' }}">
+                    End: {{ permit.enddate | date: 'HH:mm a' }}
+                </mat-card-subtitle>
+                <!-- End: <br> {{ permit.startdate | date: 'dd-MMM HH:mm a' }} -->
+                <!-- End: <br> {{ permit.enddate | date: 'dd-MMM HH:mm a' }} -->
+            </mat-card-header>
+            <br>
+            <mat-card-content>
+                <p>
+                    {{ permit.comment }}
+                </p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button color="primary" (click)="closeEntry(permit.id)">Close Permit</button>
+            </mat-card-actions>
+        </mat-card>
+    </mat-tab>
+</mat-tab-group>

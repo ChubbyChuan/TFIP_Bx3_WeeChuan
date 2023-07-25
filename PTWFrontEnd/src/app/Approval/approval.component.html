@@ -1,0 +1,102 @@
+<div>
+  <app-chart></app-chart>
+</div>
+
+<div>
+  <!-- Filtering Options -->
+  <form [formGroup]="pendingGroup" (submit)="pendingSearch()">
+    <mat-form-field>
+      <mat-label>Filter by Type</mat-label>
+      <select matNativeControl formControlName="type">
+        <option value=""></option>
+        <option value="hot">Hot</option>
+        <option value="cold">Cold</option>
+        <option value="confined">Confined Space</option>
+      </select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Filter by Location</mat-label>
+      <mat-select formControlName="locations">
+          <mat-option *ngFor="let location of pendingLocations" [value]="location">
+              {{ location }}
+          </mat-option>
+      </mat-select>
+  </mat-form-field>
+
+    <button mat-flat-button color="primary" type="submit">Search</button>
+  </form>
+
+  <!-- Permits Card -->
+  <mat-card class="PTWcard" *ngFor="let permit of (pendingpermits$ | async) as permits">
+    <mat-card-header>
+      <div mat-card-avatar class="PTWCardheader_div">
+        <mat-icon [svgIcon]="permit.type" aria-hidden="false" aria-label="hot_icon" class="PTWcard-icon"></mat-icon>
+        <h4 style="text-align: center;">#{{ permit.id }}</h4>
+      </div>
+      <mat-card-title>
+        {{ permit.locations }}
+      </mat-card-title>
+      <mat-card-subtitle> Equipment: {{ permit.equipment }}</mat-card-subtitle>
+      <mat-card-subtitle>Receiver: {{ permit.name }} from {{ permit.company }}</mat-card-subtitle>
+      <mat-card-subtitle matTooltip="{{ permit.startdate | date: 'dd-MMM HH:mm a' }}">
+        Start: {{ permit.startdate | date: 'HH:mm a' }}
+      </mat-card-subtitle>
+      <mat-card-subtitle matTooltip="{{ permit.enddate | date: 'dd-MMM HH:mm a' }}">
+        End: {{ permit.enddate | date: 'HH:mm a' }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <br>
+    <mat-card-content>
+      <p>Details:</p>
+      <p>
+        {{ permit.comment }}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button *ngIf="selectedPermitId !== permit.id" mat-button color="primary"
+        (click)="review(permit.id)">Review</button>
+    </mat-card-actions>
+    <ng-container *ngIf="selectedPermitId === permit.id">
+      <div >
+        <form [formGroup]="ApprovalformGroup">
+          <td><p>{{ ApprovalformGroup.value | json }}</p>
+            <h3> Equipment, Systems and Work Area Status</h3>
+            <div *ngFor="let work_area of work_area_list; let i=index">
+              <input type="checkbox" formArrayName="selectedWorkArea" [value]="work_area.name"
+                (change)="WACheckboxChange($event)" />
+              {{ work_area.label}}
+            </div>
+          </td>
+          <td>
+            <h3>Personal Protective Equipments (PPE)</h3>
+            <div *ngFor="let ppe of PPE_list; let i=index">
+              <input type="checkbox" formArrayName="selectedPPE" [value]="ppe.name"
+                (change)="PPECheckboxChange($event)" />
+              {{ ppe.label}}
+            </div>
+          </td>
+          <td>
+            <h3>Precautions (Before and During Work)</h3>
+            <div *ngFor="let precaution_list of precaution_list; let i=index">
+              <input type="checkbox" formArrayName="selectedPrecaution" [value]="precaution_list.name"
+                (change)="PrecautionCheckboxChange($event)" />
+              {{ precaution_list.label}}
+            </div>
+          </td>
+        </form>
+      </div>
+    </ng-container>
+
+    <!-- Plant Isolation Requirements section -->
+
+    <mat-card-actions *ngIf="selectedPermitId === permit.id">
+      <button mat-button color="primary" (click)="sendApproval(permit.id)">
+        Approved</button>
+      <button mat-button color="primary" (click)="reject(permit.id)">
+        Reject</button>
+      <button mat-button color="primary" (click)="back()">
+        Back</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

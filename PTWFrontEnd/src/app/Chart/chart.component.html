@@ -1,0 +1,57 @@
+<div class="dashboard_top">
+    <mat-card class="SystemCardBlue">
+        <mat-card-subtitle>New Permits
+            <mat-divider></mat-divider>
+        </mat-card-subtitle>
+        <mat-card-title>{{ permitpending }} Permits</mat-card-title>
+    </mat-card>
+    <mat-card class="SystemCardRed">
+        <mat-card-subtitle>Ongoing Permits
+            <mat-divider></mat-divider>
+        </mat-card-subtitle>
+        <mat-card-title>{{ permitapproved}} Permits</mat-card-title>
+    </mat-card>
+    <mat-card class="SystemCardYellow">
+        <mat-card-subtitle>Permits Closed
+            <mat-divider></mat-divider>
+        </mat-card-subtitle>
+        <mat-card-title>{{  permitclosed}} Permits</mat-card-title>
+    </mat-card>
+    <mat-card class="SystemCardGreen">
+        <mat-card-subtitle>Permits Cancelled
+            <mat-divider></mat-divider>
+        </mat-card-subtitle>
+        <mat-card-title>{{ permitcancel }} Permits</mat-card-title>
+    </mat-card>
+</div>
+
+<div class="dashboard_middle">
+    <mat-card class="ChartCard">
+        <mat-card-subtitle>Current Permit ongoing </mat-card-subtitle>
+        <mat-divider></mat-divider>
+        <img [src]="ChartURL" alt="Chart">
+    </mat-card>
+    <mat-card class="ChartCard">
+        <mat-card-subtitle>Current Permit ongoing </mat-card-subtitle>
+        <mat-divider></mat-divider>
+        <img [src]="DonutURL" alt="Chart" class="Donut_Resized_Image">
+    </mat-card>
+</div>
+
+
+
+<form>
+    <!-- <div>
+        <label>Locations:</label>
+        <input type="text" [formControl]="locationControl">
+    </div> -->
+    <!-- <div>
+        <label for="status">Status:</label>
+        <select id="status" formControlName="status">
+            <option value="pending">pending</option>
+            <option value="approved">approved</option>
+            <option value="closed">closed</option>
+        </select>
+    </div> -->
+    <!-- <button type="button" (click)="getChart()">Submit</button> -->
+</form>

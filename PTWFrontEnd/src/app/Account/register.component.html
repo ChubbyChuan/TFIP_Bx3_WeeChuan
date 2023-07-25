@@ -1,0 +1,35 @@
+<div class="card">
+    <h4 class="card-header">Login</h4>
+    <div class="card-body">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+                <mat-form-field appearance="fill">
+                    <mat-label>Name</mat-label>
+                    <input matInput type="name" formControlName="name" />
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" formControlName="email" />
+                </mat-form-field>
+            </div>
+            <div class="mb-3">
+                <mat-form-field appearance="fill">
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" formControlName="password" />
+                </mat-form-field>
+            </div>
+            <div class="mb-3">
+                <mat-form-field appearance="fill">
+                    <mat-label>Company</mat-label>
+                    <input matInput type="company" formControlName="company" />
+                </mat-form-field>
+            </div>
+            <div>
+                <button mat-raised-button color="primary" type="submit" [disabled]="invalidForm()">
+                    Register
+                </button>
+                <a routerLink="/" class="btn btn-link">Go Back</a>
+            </div>
+        </form>
+    </div>
+</div>

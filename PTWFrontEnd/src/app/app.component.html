@@ -1,0 +1,17 @@
+<mat-toolbar color="primary">
+  <button mat-button [matMenuTriggerFor]="menu">
+    <mat-icon aria-hidden="false" aria-label="Home" fontIcon="home"></mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item [routerLink]="['/create']" routerLinkActive="active">Permit</button>
+    <button mat-menu-item [routerLink]="['/approval']" routerLinkActive="active">Approval</button>
+  </mat-menu>
+  <span>{{ getTitle() }}</span>
+  <span class="spacer"></span> <!-- Add spacer to create space between menu and user info -->
+  <div class="user-info">
+    <span>{{ getUserName() }}</span>
+    <button mat-button (click)="logout()">Logout</button>
+  </div>
+</mat-toolbar>
+  <router-outlet></router-outlet>
+  
